@@ -2,6 +2,7 @@
 #include<iomanip>
 #include<cmath>
 #include <string>
+#include "database.h"
 
 using namespace std;
 
@@ -279,8 +280,35 @@ public:
 };
 
 int main() {
+
     cout << "---Welcome to Finance Management System!!---\n";
+    std::string firstname;
+    std::string lastname;
+    std::string username;
+    std::string password;
+
+    std::cout << "Enter your firstname: ";
+    std::cin >> firstname;
+    std::cout << "Enter your lastname: ";
+    std::cin >> lastname;
+    std::cout << "Enter your username: ";
+    std::cin >> username;
+    std::cout << "Enter your password: ";
+    std::cin >> password;
+
+    Database db("moneycase.db");
     User user(2000); //create user with initial balance 2000
+    if (db.open()) {
+        if (db.insertUser(firstname, lastname, username, password)) {
+            std::cout << "User '" << firstname << " " << lastname <<"' inserted successfully!" << std::endl;
+        } else {
+            std::cerr << "Failed to insert user '" << firstname << " " << lastname << "'!" << std::endl;
+        }
+        db.close();
+    } else {
+        std::cerr << "Failed to open database!" << std::endl;
+    }
+
     user.operations();
 
     return 0;
