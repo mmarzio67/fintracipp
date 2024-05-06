@@ -47,3 +47,28 @@ bool Database::insertUser(const std::string& firstname, const std::string& lastn
     sqlite3_finalize(stmt);
     return true;
 }
+
+bool Database::insertTransaction(const float& amount, const std::string& transaction_type, const std::string& date, std::string& username) {
+    std::string sql = "INSERT INTO transactions (amount, transaction_type, date, username) VALUES (?,?,?,?);";
+    sqlite3_stmt *stmt;
+
+    int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+    if (rc != SQLITE_OK) {
+        std::cerr << "Error preparing statement: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+
+    sqlite3_bind_double(stmt, 1, static_cast<double>(amount));
+    sqlite3_bind_text(stmt, 2, transaction_type.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, date.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, username.c_str(), -1, SQLITE_STATIC);
+
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "Error executing statement: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+
+    sqlite3_finalize(stmt);
+    return true;
+}
