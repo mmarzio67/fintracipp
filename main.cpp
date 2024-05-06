@@ -112,6 +112,7 @@ public:
 
     void addTransaction(Transaction* t) {
         transactions[tcount++] = t;
+        // add transaction to the database
     }
 
     void addInvestment(Investment* i) {
