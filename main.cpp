@@ -6,6 +6,8 @@
 
 using namespace std;
 
+Database db("moneycase.db");
+
 class Transaction {
 protected:
     double amount;
@@ -113,7 +115,19 @@ public:
     void addTransaction(Transaction* t) {
         transactions[tcount++] = t;
         // add transaction to the database
+        if (db.open()) {
+        if (db.insertFinRecords(t->amount, lastname, username, password)) {
+            std::cout << "User '" << firstname << " " << lastname <<"' inserted successfully!" << std::endl;
+        } else {
+            std::cerr << "Failed to insert user '" << firstname << " " << lastname << "'!" << std::endl;
+        }
+        db.close();
+    } else {
+        std::cerr << "Failed to open database!" << std::endl;
     }
+
+
+       }
 
     void addInvestment(Investment* i) {
         investments[icount++] = i;
@@ -297,7 +311,7 @@ int main() {
     std::cout << "Enter your password: ";
     std::cin >> password;
 
-    Database db("moneycase.db");
+
     User user(2000); //create user with initial balance 2000
     if (db.open()) {
         if (db.insertUser(firstname, lastname, username, password)) {

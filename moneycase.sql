@@ -16,11 +16,12 @@ CREATE TABLE Fin_types(
 CREATE TABLE Fin_records(
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
     Amont INTEGER,
-    Description TEXT NOT NULL
-    Date TEXT NOT NULL
+    Description TEXT NOT NULL,
+    Date TEXT NOT NULL,
     UserID INTEGER NOT NULL,
-    FinTypeID
-    FOREIGN KEY (UserID) REFERENCES users(id))
-    FOREIGN KEY (FinTypeID) REFERENCES fin_types Fin_types(ID));"
+    FinTypeID,
+    FOREIGN KEY (UserID) REFERENCES users(id),
+    FOREIGN KEY (FinTypeID) REFERENCES Fin_types(ID)
+    );
 
 

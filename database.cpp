@@ -48,8 +48,9 @@ bool Database::insertUser(const std::string& firstname, const std::string& lastn
     return true;
 }
 
-bool Database::insertTransaction(const float& amount, const std::string& transaction_type, const std::string& date, std::string& username) {
-    std::string sql = "INSERT INTO transactions (amount, transaction_type, date, username) VALUES (?,?,?,?);";
+
+bool Database::insertFinRecords(const float& Amont, const std::string& Description, const std::string& Date, const int& UserID, const int& FinTypeID) {
+    std::string sql = "INSERT INTO Fin_records (ID, Amont, Description, Date, UserID, FinTypeID) VALUES (?, ?, ?,?,?,?)";
     sqlite3_stmt *stmt;
 
     int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -58,10 +59,11 @@ bool Database::insertTransaction(const float& amount, const std::string& transac
         return false;
     }
 
-    sqlite3_bind_double(stmt, 1, static_cast<double>(amount));
-    sqlite3_bind_text(stmt, 2, transaction_type.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, date.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 4, username.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_double(stmt, 1, static_cast<double>(Amont));
+    sqlite3_bind_text(stmt, 2, Description.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, Date.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 4, static_cast<int>(UserID));
+    sqlite3_bind_int(stmt, 5, static_cast<int>(FinTypeID));
 
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {

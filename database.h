@@ -12,7 +12,7 @@ public:
     bool open();
     void close();
     bool insertUser(const std::string& firstname, const std::string& lastname, const std::string& username, const std::string& password);
-    bool insertTransaction(const float& amount, const std::string& transaction_type, const std::string& date, std::string& username);
+    bool insertFinRecords(const float& Amont, const std::string& Description, const std::string& Date, const int& UserID, const int& FinTypeID);
 
 
 private:
